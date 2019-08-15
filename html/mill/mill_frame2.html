@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>我的矿机</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            height: 100%;
+          }
+          /*导航切换*/
+          /*.aui-tab-item{
+            width: 20%;
+            height: 45px;
+            font-size: 15px;
+            line-height: 45px;
+          }*/
+          /*内容*/
+          table{
+            width: 100%;
+          }
+          thead{
+            /*background: linear-gradient(#000000,#4A4A4A);*/
+            line-height: 40px;
+            color: #fff;
+          }
+          tbody tr{
+            padding: 20px 0;
+            height: 88px;
+            border-bottom:1px solid #E6E6E6;
+          }
+          .aui-media-list{
+            width: 40%;
+          }
+          .aui-list-item-media{
+            width: 45px;
+            height: 45px;
+          }
+          .detail{
+            height: 20px;
+            line-height: 20px;
+            border-radius: 30px;
+            color: #fff;
+          }
+          /*领取*/
+          .get{
+            width: 88vw;
+            bottom: 17px;
+            left: 50%;
+            transform: translateX(-50%);
+            line-height: 40px;
+            border-radius: 40px;
+            color: #fff;
+          }
+      </style>
+  </head>
+  <body>
+    <!-- 导航切换 -->
+    <!-- <div class="aui-tab just-space padb5" id="tab">
+        <div class="aui-tab-item aui-active">正常矿机</div>
+        <div class="aui-tab-item">过期矿机</div>
+    </div> -->
+    <!-- 内容 -->
+    <div class="mb65">
+      <table class="text-center">
+        <thead class="fs13 bgco">
+          <tr>
+            <th class="padl2v">矿机类型（<span id="nums"></span>台）</th>
+            <th>运行时间</th>
+            <th>已领取</th>
+            <th>状态</th>
+            <th class="padr2v">操作</th>
+          </tr>
+        </thead>
+        <tbody class="fs13 bgcf">
+          <!-- <tr>
+            <td class="aui-media-list padl2v">
+              <div class="aui-list-item aui-list-item-middle">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media">
+                          <img src="../../image/k1.png" class="aui-img-round aui-list-img-sm">
+                      </div>
+                      <div class="aui-list-item-inner">
+                          <div class="aui-list-item-text">
+                              <div class="aui-list-item-title">微型矿机</div>
+                          </div>
+                          <div class="aui-list-item-text fs10">
+                              预计0.0021/小时
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </td>
+            <td>70/9600</td>
+            <td>0.0504</td>
+            <td>正常</td>
+            <td class="fs12 padr2v">
+              <div onclick="openDetailMill()" class="detail bgbtn">
+                详情
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="aui-media-list padl2v">
+              <div class="aui-list-item aui-list-item-middle">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media">
+                          <img src="../../image/k1.png" class="aui-img-round aui-list-img-sm">
+                      </div>
+                      <div class="aui-list-item-inner">
+                          <div class="aui-list-item-text">
+                              <div class="aui-list-item-title">微型矿机</div>
+                          </div>
+                          <div class="aui-list-item-text fs10">
+                              预计0.0021/小时
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </td>
+            <td>70/9600</td>
+            <td>0.0504</td>
+            <td>正常</td>
+            <td class="fs12 padr2v">
+              <div class="detail bgbtn">
+                详情
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="aui-media-list padl2v">
+              <div class="aui-list-item aui-list-item-middle">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-media">
+                          <img src="../../image/k1.png" class="aui-img-round aui-list-img-sm">
+                      </div>
+                      <div class="aui-list-item-inner">
+                          <div class="aui-list-item-text">
+                              <div class="aui-list-item-title">微型矿机</div>
+                          </div>
+                          <div class="aui-list-item-text fs10">
+                              预计0.0021/小时
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </td>
+            <td>70/9600</td>
+            <td>0.0504</td>
+            <td>正常</td>
+            <td class="fs12 padr2v">
+              <div class="detail bgbtn">
+                详情
+              </div>
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+    <!-- 领取 -->
+    <!-- <div class="">
+      <div class="pf get fs16 text-center bgbtn">
+        一键领取
+      </div>
+    </div> -->
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/aui-tab.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var box = document.getElementById('box');
+      var nums = document.getElementById('nums');
+      apiready = function(){
+          api.ajax({
+              url: ajaxUrl + 'mymachine',
+              method: 'post',
+              data: {
+                  values: {
+                      type: 'expired',
+                      token:token
+                  }
+              }
+          },function(ret, err){
+              if (ret) {
+                // console.log(JSON.stringify( ret ));
+                //   alert( JSON.stringify( ret ) );
+                nums.innerText = ret.data.num;
+                  var leng = ret.data.num;
+                  for (var i = 0; i < leng; i++) {
+                    box.innerHTML += `<tr>
+                      <td class="aui-media-list padl2v">
+                        <div class="aui-list-item aui-list-item-middle">
+                            <div class="aui-media-list-item-inner">
+                                <div class="aui-list-item-media">
+                                    <img src="../../image/k1.png" class="aui-img-round aui-list-img-sm">
+                                </div>
+                                <div class="aui-list-item-inner">
+                                    <div class="aui-list-item-text">
+                                        <div class="aui-list-item-title">${ret.data.machine[i].name}</div>
+                                    </div>
+                                    <div class="aui-list-item-text fs10">
+                                        预计${ret.data.machine[i].yield}/小时
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </td>
+                      <td>${ret.data.machine[i].run_time}/${ret.data.machine[i].rent_time}</td>
+                      <td>${ret.data.machine[i].get_balance}</td>
+                      <td>正常</td>
+                      <td class="fs12 padr2v">
+                        <div onclick="openDetailMill()" class="detail bgbtn">
+                          详情
+                        </div>
+                      </td>
+                    </tr>`
+                  }
+              }
+          });
+        }
+      //矿机详情
+      function openDetailMill() {
+        api.openWin({
+            name: 'millDetail',
+            url: './millDetail.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+
+
+      }
+  </script>
+  </html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>注册</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+      .aui-list-item-inner{
+        border-bottom: 1px solid #eee;
+      }
+      .aui-list-item-input input{
+        font-size: 14px;
+      }
+      .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+        line-height: 41px;
+      }
+      .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+        width: 42%;
+      }
+      .code input{
+        width: 32vw;
+        display: inline-block;
+      }
+      .code>div{
+        width: 20vw;
+      }
+      .agreement-text p{
+        text-indent: 2rem;
+      }
+      .agreement-text p:first-child{
+        text-indent: 0;
+      }
+      .check-box input{
+        vertical-align: middle;
+        margin-right: 1vw;
+      }
+      .register-btn{
+        width: 88vw;
+        margin: 30px auto;
+        line-height: 40px;
+      }
+
+      </style>
+  </head>
+  <body class="bgcf">
+    <div class="aui-content aui-margin-b-15">
+      <ul class="aui-list aui-form-list fs15">
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    用户名手机号
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="mobile_id" type="number" oninput="if(value.length>11)value=value.slice(0,11)" placeholder="必须本人银行卡绑定的手机号">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    姓名
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="username" type="text" placeholder="必须真实姓名">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    支付宝
+                </div>
+                <div class="aui-list-item-input">
+                    <input id='alipay' type="text" placeholder="必须真实支付宝" onkeyup="this.value=this.value.replace(/[^\w_\.\@\_]/g,'');"/>
+                    <!-- <input id='alipay' type="text" placeholder="必须真实支付宝" oninput="this.value=this.value.replace(/[\u4e00-\u9fa5\d]/g,'');"/>\\u4E00-\\u9FFF -->
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    登录密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="passwords" type="password" placeholder="请输入登录密码">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    确认密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="sure_password" type="password" placeholder="请再次输入登录密码">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    二级密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="sec_password" type="password" placeholder="请输入二级密码">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    确认二级密码
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="sure_sec_password" type="password" placeholder="请再次输入二级密码">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    推荐人手机号
+                </div>
+                <div class="aui-list-item-input">
+                    <input id="mobile_idt" type="number" placeholder="请输入推荐人手机号" oninput="if(value.length>11)value=value.slice(0,11)">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    验证码
+                </div>
+                <div class="aui-list-item-input code">
+                    <input id="codevalue" type="text" name="" value="" placeholder="请输入验证码">
+                    <div onclick="createCode()" id="discode" class="fr mr2v">
+                      <!-- <img src="./image/t4.png" alt=""> -->
+                    </div>
+                </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+    <div class="agreement-text pad5a2v bgce">
+      <p class="bold">尊敬的CBT原始矿工，请认真阅读以下注意事项：</p>
+      <p>【1】注册年龄18-70周岁具有完全民事自主行为能力人，同一身份证最多注册3个账号，收款资料必须真实有效，注册成功后不可修改，姓名与支付宝号及收款二维码必须三者完全一致，否则冻结账号无法完成收款。</p>
+      <p>【2】交易规则则请严格遵守平台制度执行，买方1小时内完成打款，卖方1小时内确认收款。如买方10分钟内完成打款，卖方10分钟内确认收款，双方将额外获得“信用资产”，双方守信双方获得，单方守信单方获得。</p>
+      <p>【3】区块链被誉为财富第九波，CBT平台完全去中心化，矿工点对点交易，所有资金不经过平台，无众筹无提现端口。零门槛，零风险，零投资，完全免费注册随进随出，投资自由，风险自控，请用闲散资金参与。</p>
+    </div>
+    <div class="check-box text-center bgcf mt30 padt10 cogry">
+      <input id="checkboxs" type="checkbox" name="" value="">我已认真阅读以上规则，同意加入EBT矿工联盟
+    </div>
+    <div onclick="openEncrypted()" tapmode class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+        注册新会员
+    </div>
+    <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var mobileId = document.getElementById('mobile_id');
+      var userName = document.getElementById('username');
+      var alipay = document.getElementById('alipay');
+      var passwords = document.getElementById('passwords');
+      var surePassword = document.getElementById('sure_password');
+      var secPassword = document.getElementById('sec_password');
+      var sureSecPassword = document.getElementById('sure_sec_password');
+      var mobileIdT = document.getElementById('mobile_idt');
+      var codeValue = document.getElementById('codevalue');
+      var checkBoxs = document.getElementById('checkboxs');
+      var mobileIdVal;
+      var userNameVal;
+      var alipayVal;
+      var passwordVal;
+      var surePasswordVal;
+      var secPasswordVal;
+      var sureSecPasswordVal;
+      var mobileIdTVal;
+      var codeValueVal;
+      var imgUrl;
+      apiready = function(){
+        //监听登录界面刷新首页
+        api.addEventListener({
+            name: 'indexRoad'
+        }, function(ret, err){
+            window.location.reload();//刷新页面
+        });
+        //验证码
+        imgUrl = 'http://47.89.185.175/index.php/captcha.html'
+          createCode()
+      };
+      var flag = false;
+      function openEncrypted() {
+        mobileIdVal = mobileId.value;
+        userNameVal = userName.value;
+        alipayVal = alipay.value;
+        passwordVal = passwords.value;
+        surePasswordVal = surePassword.value;
+        secPasswordVal = secPassword.value;
+        sureSecPasswordVal = sureSecPassword.value;
+        mobileIdTVal = mobileIdT.value;
+        codeValueVal = codeValue.value;
+        if (!flag) {
+          checkForm()
+        }else {
+          api.ajax({
+              url: ajaxUrl + 'reg',
+              method: 'post',
+              data: {
+                  values: {
+                    mobile:mobileIdVal,
+                    name:userNameVal,
+                    ali_account:alipayVal,
+                    password:passwordVal,
+                    password2:secPasswordVal,
+                    recom_mobile:mobileIdTVal,
+                    captcha:codeValueVal
+                  }
+              }
+          },function(ret, err){
+            // 打开绑定密保页面
+            console.log(JSON.stringify(ret));
+            var token = ret.data.token;
+            if (ret.errcode === 200) {
+              var info = "注册成功";
+              tishi(info);
+              api.openWin({
+                name: 'encrypted',
+                url: './encrypted.html',
+                pageParam: {
+                  token: token
+                }
+              });
+            }else {
+              tishi(ret.msg)
+            }
+            // api.openWin({
+            //   name: 'encrypted',
+            //   url: './encrypted.html',
+            //   pageParam: {
+            //     token: ret.data.token
+            //   }
+            // });
+          });
+        }
+      }
+      //验证码
+      function createCode() { //创建验证码函数
+          document.getElementById("discode").innerHTML = "<img id=\"codeimg\" src="+ imgUrl +" alt=\"\">";
+      }
+      //验证手机号
+      function checkForm() {
+        var mobileRet = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
+        if (mobileIdVal ==="") {
+          alert('手机号不能为空')
+        }else if (mobileIdVal.length !== 11) {
+          alert('请输入11位手机号码')
+        }else if (!mobileRet.test(mobileIdVal)) {
+          alert('请输入正确手机号')
+        }else {
+          checkCode()
+        }
+      }
+      //验证密码是否正确
+      function checkCode() {
+        if (passwordVal === "") {
+          alert('密码不能为空')
+        }else if (passwordVal !== surePasswordVal) {
+          alert("密码不一致!");
+        }else if (secPasswordVal === "") {
+          alert('二级密码不能为空')
+        } else if(secPasswordVal !== sureSecPasswordVal){
+          alert("二级密码不一致!");
+        } else{
+          checkAgree()
+        }
+      }
+      //验证是否同意协议
+      function checkAgree() {
+        var checkChecked = checkBoxs.checked;
+        if (!checkChecked) {
+          alert("请仔细阅读协议")
+        }else {
+          flag = true;
+        }
+      }
+  </script>
+  </html>

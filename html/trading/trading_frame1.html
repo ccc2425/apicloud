@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background: #eee;
+          }
+          body{
+            box-sizing: border-box;
+            padding-top: 16px;
+          }
+          .wait-buy{
+            width: 95vw;
+            margin: 0 auto 16px;
+          }
+          table{
+            width: 100%;
+          }
+          .submit{
+            width: 80%;
+            height: 24px;
+            margin: auto;
+            line-height: 24px;
+            border-radius: 40px;
+            color: #fff;
+          }
+          thead,tr{
+            border-bottom: 1px solid #FC5F2A;
+          }
+          tbody tr:last-child{
+            border-bottom: 0;
+          }
+          /**/
+          .iconfont{
+            font-size: 10px;
+            vertical-align: top;
+            margin-left: 2vw;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="wait-buy boradius10">
+          <div class="wait-tit bgcf fs15 lh45 padl2v bold">
+            等待买入列表<i class="iconfont">&#xe60e;</i>
+          </div>
+          <div class="wait-body text-center bgcf">
+            <table>
+              <thead class="bold fs15 lh40">
+                <tr>
+                  <th>数量</th>
+                  <th>价格/美元</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="trading_body" class="fs14 lh40">
+
+              </tbody>
+            </table>
+          </div>
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/aui-pull-refresh.js"></script>
+  <script type="text/javascript">
+      var index;
+      var token = localStorage.getItem("token");
+      var active = localStorage.getItem("active");
+      var tradingBody = document.getElementById('trading_body')
+      apiready = function(){
+        api.ajax({
+            url: ajaxUrl + 'buylistall',
+            method: 'post',
+            data: {
+                values: {
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+              //   console.log(ret.data.length);
+                var leng = ret.data.length;
+                for (var i = 0; i < leng; i++) {
+                  tradingBody.innerHTML += `<tr>
+                    <td>${ret.data[i].ebt}</td>
+                    <td>${ret.data[i].ebt_price}</td>
+                    <td>
+                      <div onclick="openBuyer(${ret.data[i].id})" class="fs15 submit bgbtn">
+                        卖给TA
+                      </div>
+                    </td>
+                  </tr>`
+                }
+            }
+        });
+
+        //监听登录界面刷新首页
+        api.addEventListener({
+            name: 'loading'
+        }, function(ret, err){
+          if (ret.value.state === 'loading') {
+              window.location.reload();//刷新页面/
+            }
+        });
+        api.addEventListener({
+            name: 'loadingtry1'
+        }, function(ret, err){
+          if (ret.value.state === 'loading') {
+              window.location.reload();//刷新页面/
+            }
+        });
+        //卖出刷新
+        api.addEventListener({
+            name: 'mytrad'
+        }, function(ret, err){
+          if (ret.value.load === 'loading') {
+              window.location.reload();//刷新页面/
+            }
+        });
+        // api.addEventListener({
+        //     name: 'buyerLook'
+        // }, function(ret, err){
+        //   index = ret.value.key1+1;
+        //   console.log(index);
+        // });
+      };
+      //买家资料
+      function openBuyer(index) {
+        console.log(index);
+        if (active === '0') {
+          var info = "该账户尚未激活";
+          tishi(info)
+        }else {
+          api.ajax({
+              url: ajaxUrl + 'sellinfo',
+              method: 'post',
+              data: {
+                  values: {
+                      id: index,
+                      token: token
+                  }
+              }
+          },function(ret, err){
+              if (ret) {
+                if (ret.errcode === 200) {
+                  api.confirm({
+                    title: '提示',
+                    msg: ret.msg,
+                    buttons: ['确定', '取消']
+                  }, function(ret, err) {
+                    var buttonIndex = ret.buttonIndex;
+                    if (buttonIndex === 1) {
+                      api.ajax({
+                          url: ajaxUrl + 'sell',
+                          method: 'post',
+                          data: {
+                              values: {
+                                  id: index,
+                                  token: token,
+                              }
+                          }
+                      },function(ret, err){
+                          if (ret.errcode === 200) {
+                            alert("出售成功，请联系对方打款")
+                            api.sendEvent({
+                                name: 'loadingtry3',
+                                extra: {
+                                    load: 'load'
+                                }
+                            });
+                            api.sendEvent({
+                                name: 'openTrad3',
+                                extra: {
+                                    open: 'try3'
+                                }
+                            });
+
+                            // setTimeout(function(){
+                            //   window.location.reload()
+                            // },1000);
+                          }else {
+                            tishi(ret.msg)
+                          }
+                      });
+                    }
+                    // console.log(index);
+                  });
+                }else {
+                  alert(ret.msg)
+                }
+                  // alert( JSON.stringify( ret ) );
+              }
+          });
+
+          // api.openWin({
+          //   name: 'buyer',
+          //   url: './buyer.html',
+          //   pageParam: {
+          //     index: index,
+          //     sta:'loading'
+          //   }
+          // });
+        }
+      }
+      //下拉刷新
+      var pullRefresh = new auiPullToRefresh({
+  			container: document.querySelector('body'),
+  			triggerDistance: 100
+  		},function(ret){
+  			if(ret.status=="success"){
+  				setTimeout(function(){
+            window.location.reload()
+  					pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+  				},1500)
+  			}
+  		})
+  </script>
+  </html>

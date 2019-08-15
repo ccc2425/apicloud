@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>订单资料</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+      <style>
+          body{
+
+          }
+          .aui-list-item-inner {
+              border-bottom: 1px solid #eee;
+          }
+          .aui-list-item-input input {
+              font-size: 14px;
+          }
+          .aui-list .aui-list-item-label,
+          .aui-list .aui-list-item-label-icon {
+              width: 42%;
+              line-height: 41px;
+          }
+          .aui-list-item-img{
+              width: 100%;
+              padding: 2vh 0;
+          }
+          .save{
+            display: inline-block;
+            padding:  0 3vw;
+            margin-bottom: 2vh;
+            border-radius: 30px;
+            border: 1px solid #F6A106;
+            color: #F6A106;
+            font-size: 13px;
+            line-height: 24px;
+            margin-left: 50vw;
+            transform: translateX(-50%);
+          }
+          .register-btn {
+              width: 88vw;
+              margin: 30px auto;
+              line-height: 40px;
+          }
+          .copy{
+            position: absolute;
+            right: 3vw;
+            top: .9rem;
+            font-size: 12px;
+            border-radius: 30px;
+            border: 1px solid #F6A106;
+            color: #F6A106;
+            padding: 0 3vw;
+          }
+          img[src=""],img:not([src]){
+              opacity:0;
+          }
+      </style>
+  </head>
+  <body>
+      <div id="ordernews" class="bgcf borderb1e fs14">
+        <!-- <div class="pad0a3v lh35">
+          订单状态：等待打款
+        </div>
+        <div class="cored lh24 fs13 pad0a2v">交易数量：300个可售余额</div>
+        <div class="cored lh24 fs13 pad0a2v">交易时间：2019-08-07 19:22:10</div> -->
+      </div>
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          手机号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="mobile" class="iptcob" type="text" disabled value="">
+                      </div>
+                      <span onclick="openCall()" class="copy">点击拨打</span>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          真实姓名
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="names" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <!-- <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          支付宝名称
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="aliname" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li> -->
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          支付宝账号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="aliid" class="iptcob" type="text" disabled value="">
+                      </div>
+                      <span onclick="copyAply()" class="copy">一键复制</span>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner border0">
+                      <div class="aui-list-item-label">
+                          支付宝收款码
+                      </div>
+                      <!-- <div class="aui-list-item-input">
+                        <div class="aui-list-item-img">
+                          <img id="alicode" src="" alt="">
+                        </div>
+                        <div onclick="saveImg()" class="save">
+                          点击保存
+                        </div>
+                      </div> -->
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-input">
+                        <div class="aui-list-item-img mau">
+                          <img id="alicode" src="" alt="">
+                        </div>
+                        <div onclick="saveImg()" class="save">
+                          点击保存
+                        </div>
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner border0">
+                      <div class="aui-list-item-label">
+                          支付凭证
+                      </div>
+                      <div id="aplyimg_text" class="aui-list-item-input">
+                        暂无凭证
+                        <!-- <div class="aui-list-item-img">
+                          <img onclick="upAplyImg()" id="aplyimg" src="../../image/nov.png" alt="">
+                        </div> -->
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-input">
+                        <div id="aplyimg" class="aui-list-item-img mau">
+                          <!-- <img  src="" alt=""> -->
+                        </div>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <div onclick="openTrading()" class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+          确定
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/zepto.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var mobile = document.getElementById('mobile');
+      var names = document.getElementById('names');
+      var aliname = document.getElementById('aliname');
+      var aliid = document.getElementById('aliid');
+      var alicode = document.getElementById('alicode');
+      var aplyimg = document.getElementById('aplyimg');
+      var aplyimg_text = document.getElementById('aplyimg_text');
+      var ordernews = document.getElementById('ordernews');
+      var imgUrl;
+      var _id;
+      var img_Url;
+      apiready = function(){
+        var id = api.pageParam.id;
+        _id = id;
+        api.ajax({
+            url: ajaxUrl + 'transferdetail',
+            method: 'post',
+            data: {
+                values: {
+                    id:id,
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              console.log(JSON.stringify(ret));
+              ordernews.innerHTML = `<div class="pad0a3v lh35">
+                订单状态：${ret.data.status_name}
+              </div>
+              <div class="cored lh24 fs13 pad0a2v">交易数量：${ret.data.ebt}个可售余额,人名币余额${ret.data.ebt_total_price_rmb}</div>
+              <div class="cored lh24 fs13 pad0a2v">交易时间：${ret.data.sell_time}</div>`
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+                mobile.value = ret.data.mobile;
+                names.value = ret.data.name;
+                // aliname.value = ret.data.name;
+                aliid.value = ret.data.ali_account;
+                alicode.src = ret.data.ali_receipt;
+                if (ret.data.certificate === ""||ret.data.certificate ==="null") {
+                  aplyimg_text.style.display = "block";
+                  aplyimg.style.display = "none";
+                } else {
+                  aplyimg_text.style.display = "none";
+                  aplyimg.style.display = "block";
+                  aplyimg.innerHTML = `<img src='${ret.data.certificate}' alt="">`
+                }
+            }
+        });
+
+      };
+      //保存收款码
+      function saveImg() {
+        api.saveMediaToAlbum({
+            path: 'fs://code.png'
+        }, function(ret, err) {
+            if (ret && ret.status) {
+                alert('保存成功');
+            } else {
+                alert('保存失败');
+            }
+        });
+      }
+      // 提交上传
+      function openTrading() {
+        api.sendEvent({
+            name: 'openTrad3',
+            extra: {
+                open: 'trading3',
+            }
+        });
+        api.sendEvent({
+            name: 'loadingtry3',
+            extra: {
+                load: 'trading3',
+            }
+        });
+        api.closeWin();
+      }
+      //复制支付宝账号
+      function copyAply() {
+        var aliid = document.getElementById('aliid');
+        var text=aliid.value;
+        console.log(text);
+        var clipBoard = api.require('clipBoard');
+        var info;
+      	clipBoard.set({
+         		value: text
+      	}, function(ret, err) {
+          	if (ret) {
+              info = '复制成功';
+      		} else {
+              info = '复制失败，请重试';
+          	}
+            tishi(info)
+          });
+        }
+        //拨打电话
+        function openCall() {
+          var mobile = document.getElementById('mobile');
+          var mobileVal = mobile.value;
+          api.call({
+              type: 'tel_prompt',
+              number: mobileVal
+          });
+        }
+  </script>
+  </html>

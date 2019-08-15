@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>绑定密保</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/weui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+    <style>
+        .aui-list-item-inner {
+            border-bottom: 1px solid #eee;
+        }
+        .aui-list-item-input input {
+            font-size: 14px;
+        }
+        .aui-list .aui-list-item-label,
+        .aui-list .aui-list-item-label-icon {
+            width: 42%;
+            line-height: 41px;
+        }
+        .register-btn {
+            width: 88vw;
+            margin: 30px auto;
+            line-height: 40px;
+        }
+        /*选择密保*/
+    </style>
+</head>
+
+<body>
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list fs15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        密保问题一
+                    </div>
+                    <div onclick="question(0)" class="aui-list-item-input">
+                        <input class="iptcob ipt" type="text" disabled placeholder="请选择问题">
+                        <!-- <button type="button" name="button" id="" data-options='{"type":"date","beginYear":2014,"endYear":2016}' class="btn mui-btn mui-btn-block iptcob">请选择问题</button> -->
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        密保答案一
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input id="answer1" type="text" placeholder="中文或英文或数字不能有特殊符号">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        密保问题二
+                    </div>
+                    <div onclick="question(1)" class="aui-list-item-input">
+                        <input class="iptcob ipt" type="text" disabled placeholder="请选择问题">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        密保答案二
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input id="answer2" type="text" placeholder="中文或英文或数字不能有特殊符号">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        一级密码
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input id="apassword" class="iptcob" type="text" placeholder="请输入一级密码">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="pad10a3v">
+        <p class="cored">注意，密保是找回密码的唯一途径，请认真填写并牢记，忘记答案将永远无法找回密码！</p>
+    </div>
+    <div onclick="openLogin()" class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+        确认提交
+    </div>
+    <span class="tishio"></span>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/weui.min.js"></script>
+<script type="text/javascript">
+    var tokens;
+    var questionData;
+    console.log(tokens);
+    // var questionId;
+    var answer1 = document.getElementById('answer1');
+    var answer2 = document.getElementById('answer2');
+    var apassword = document.getElementById('apassword');
+    var problem;
+    apiready = function() {
+      tokens = api.pageParam.tokens;
+      console.log(tokens);
+      api.ajax({
+          url: ajaxUrl + 'secretlist',
+          method: 'post',
+          data: {
+              values: {
+                  token:tokens
+              }
+          }
+      },function(ret, err){
+        console.log(JSON.stringify(ret));
+            questionData = ret.data.data;
+            var length = questionData.length;
+            problem = [];
+            for (var i = 0; i < length; i++) {
+              problem.push({label:questionData[i].problem,value:questionData[i].id})
+              console.log(1);
+            }
+      });
+    };
+    //选择问题
+    var ipt = document.getElementsByClassName('ipt');
+      function question(index) {
+        console.log(JSON.stringify(problem));
+      // weui.picker([{
+      //       label: questionData[0].problem,
+      //       value: questionData[0].id},
+      //     {
+      //       label: questionData[1].problem,
+      //       value: questionData[1].id},
+      //     {
+      //       label: questionData[2].problem,
+      //       value: questionData[2].id
+      //   }], {
+      weui.picker(problem, {
+          onChange: function (result) {
+              // console.log(result[0].label);
+          },
+          onConfirm: function (result) {
+            ipt[index].value = result[0].label;
+            console.log(result[0].value);
+            ipt[index].name = result[0].value;
+            console.log(result[0].value);
+            console.log(ipt[index].name);
+            // questionId = result[0].value;
+          }
+      });
+    }
+    //提交回到登录  http://192.168.0.171/index.php/api/index/secret?token=eG92SmVaU1ZrS3lyU0gyQldQRXo0QUw1RTJKQ3NSWDJfMTE=' + tokens,
+    function openLogin() {
+      var answer1Val = answer1.value;
+      var answer2Val = answer2.value;
+      var apasswordVal = apassword.value;
+      var key1 = ipt[0].name;
+      var key2 = ipt[1].name;
+      // var da = {
+      //   1:answer1Val,
+      //   [key2]:answer2Val
+      // }
+      // console.log(JSON.stringify(da));
+      var data = {
+           [key1]:answer1Val,
+           [key2]:answer2Val
+      };
+      console.log(JSON.stringify(data));
+      var datas = JSON.stringify(data);
+      console.log(datas);
+      console.log(key1);
+      console.log(key2);
+      if(key1===""||key2===""){
+        alert("请选择问题")
+      }else{
+      api.ajax({
+          url: ajaxUrl + 'secret',
+          method: 'post',
+          data: {
+              values: {
+                  data:datas,
+                  password:apasswordVal,
+                  token:tokens
+              }
+          }
+      },function(ret, err){
+        // console.log(JSON.stringify(ret));
+        // alert(datas)
+        if(ret){
+          if (ret.errcode === 200) {
+            api.sendEvent({
+                name: 'reloadindex',
+                extra: {
+                    load: 'loading',
+                }
+            });
+            api.closeToWin({
+                name: 'root'
+            });
+            // api.closeWin()
+          }else {
+            tishi(ret.msg)
+          }
+        }
+
+      });
+    }
+    }
+</script>
+</html>

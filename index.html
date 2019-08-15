@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>登录</title>
+      <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="./css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="./css/public.css"/>
+      <style>
+          body{
+
+          }
+          .login-logo{
+            position: relative;
+            width: 100%;
+            height: 280px;
+          }
+          .logo{
+            width: 26vw;
+            height: 26vw;
+            position: absolute;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+          input{
+            outline:none;
+          }
+          .code input{
+            display: inline-block;
+            width: 32vw;
+          }
+          .code>div{
+            width: 28vw;
+          }
+          .login-btn{
+            line-height: 40px;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="login-logo">
+        <img src="./image/bg.png" alt="">
+        <img class="logo" src="./image/logoE.png" alt="">
+      </div>
+      <div class="pad10a5v fs15">
+        <div class="pa10a0 lh35 borderb1e">
+          <i class="iconfont mr2v">&#xe608;</i><span class="mr3v">手机号</span><input id="phone_id" type="text" name="" value="" placeholder="请输入手机号">
+        </div>
+        <div class="pa10a0 lh35 borderb1e">
+          <i class="iconfont mr2v">&#xe65e;</i><span class="mr3v">密<span style="color:transparent">密</span>码</span><input id="password_id" type="password" name="" value="" placeholder="请输入密码">
+        </div>
+        <div class="pa10a0 lh35 borderb1e clearfix code">
+          <i class="iconfont mr2v">&#xe636;</i>
+          <span class="mr3v">验证码</span>
+          <input id="codevalue" type="text" name="" value="" placeholder="请输入验证码">
+          <div onclick="createCode()" id="discode" class="fr mr2v">
+            <!-- <img src="./image/code.png" alt=""> -->
+          </div>
+        </div>
+        <div onclick="openIndex()" class="login-btn fs16 boradius40 text-center mt30 bgbtn">
+            登录
+        </div>
+        <div class="clearfix fs14 mt16">
+            <div tapmode onclick="openRegister()" class="fl coyllo ml3v">
+              注册新用户
+            </div>
+            <div tapmode onclick="openPassword()" class="fr co999 mr3v">
+              找回密码
+            </div>
+        </div>
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="./script/api.js"></script>
+  <script type="text/javascript">
+      localStorage.removeItem('token');
+      var imgUrl;
+      // var token;
+      apiready = function(){
+        // localStorage.removeItem('token');
+            imgUrl = 'http://47.89.185.175/index.php/captcha.html'
+            exitNowApp()
+            createCode()
+            // var token = localStorage.getItem("token");
+            // console.log(token);
+            api.addEventListener({
+                name: 'loadindex'
+            }, function(ret, err){
+                window.location.reload()
+            });
+            //绑定密保刷新
+            api.addEventListener({
+                name: 'reloadindex'
+            }, function(ret, err){
+                window.location.reload()
+            });
+      };
+      //进入首页
+      var phoneId = document.getElementById('phone_id');
+      var passwordId = document.getElementById('password_id');
+      var codeValue = document.getElementById('codevalue');
+      function openIndex() {
+        var phoneIdVal = phoneId.value;
+        var passwordIdVal = passwordId.value;
+        var codeValueVal = codeValue.value;
+        // alert(phoneIdVal,passwordIdVal,codeValueVal)
+        api.ajax({
+            url: ajaxUrl + 'login?mobile=' + phoneIdVal + '&password=' + passwordIdVal + '&captcha=' + codeValueVal,
+            // url: ajaxUrl + 'login',
+            method: 'post',
+            data:{
+              value:{
+                mobile:phoneIdVal,
+                password:passwordIdVal,
+                captcha:codeValueVal
+              }
+            }
+        },function(ret, err){
+          console.log(JSON.stringify( ret ));
+          var Errcode = ret.errcode;
+          var token = ret.data.token;
+          // storage=window.localStorage;
+          // storage.token = token;
+          // console.log(token);
+          if (ret.errcode === 2007|| ret.errcode === 2001) {
+            tishi(ret.msg)
+          }else if (ret.errcode === 2008) {
+            tishi(ret.msg)
+            passwordIdVal = ""
+          }else if (ret.errcode === 2009) {
+            tishi(ret.msg)
+            api.openWin({
+                name: 'encrypted',
+                url: './html/public/encrypted.html',
+                pageParam: {
+                    token: token
+                }
+            });
+          }else if (ret.errcode === 2010) {
+            tishi(ret.msg)
+          }else {
+            alert(ret.msg)
+            tishi(ret.msg)
+            api.openWin({
+              name: 'indexhome',
+              url: './indexhome.html',
+              pageParam: {
+                token: token,
+                Errcode:Errcode
+              }
+            });
+          }
+        });
+             //发送刷新首页
+             api.sendEvent({
+                 name: 'indexRoad',
+                 extra: {
+                 }
+             });
+
+          // }
+      }
+      //立即注册
+      function openRegister() {
+        api.openWin({
+            name: 'register',
+            url: './html/public/register.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+      }
+      //忘记密码
+      function openPassword() {
+        api.openWin({
+            name: 'password',
+            url: './html/public/password.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+      }
+      //验证码
+      function createCode() { //创建验证码函数
+          document.getElementById("discode").innerHTML = "<img id=\"codeimg\" src="+ imgUrl +" alt=\"\">";
+      }
+      //验证验证码输入是否正确
+      // function checkCode() {
+      //   var val1 = document.getElementById("codevalue").value;
+        // var val2 = code;
+        // if (val1 != val2) {
+        //     alert("验证码错误!");
+        //     document.getElementById('codevalue').value = "";
+        //     createCode()
+        // }else {
+        //   flag = true;
+        // }
+      // }
+      //退出APP
+      function exitNowApp(){
+        $api.setStorage('isFullScreen',0);
+        //按两次退出应用
+        api.addEventListener({
+          name : 'keyback'
+        }, function(ret, err) {
+          //全屏时 需要发送事件 并关闭全屏
+          var isFullScreen = $api.getStorage('isFullScreen');
+          console.log("isFullScreen"+isFullScreen);
+          //如果全屏 只关闭全屏
+          if(isFullScreen == '1'){
+            api.sendEvent({
+                name: 'index',
+                extra: {}
+            });
+          }else{
+            api.toast({
+              msg : '再点一次退出应用',
+              duration : 2000,
+              location : 'bottom'
+            });
+            api.addEventListener({
+              name : 'keyback'
+            }, function(ret, err) {
+              if($api.getStorage('isFullScreen' == "0")){
+                api.sendEvent({
+                    name: 'index',
+                    extra: {}
+                });
+              }else{
+                api.closeWidget({
+                  silent : true
+                });
+              }
+
+            });
+          }
+          setTimeout(function() {
+          }, 2000)
+        });
+      }
+  </script>
+  </html>

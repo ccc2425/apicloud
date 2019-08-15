@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>可售余额</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+      </style>
+  </head>
+  <body>
+      <div id="box" class="pad2v">
+      </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var box = document.getElementById('box');
+      apiready = function(){
+        api.ajax({
+            url: ajaxUrl + 'income',
+            method: 'post',
+            data: {
+                values: {
+                    type: 'balance',
+                    token:token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+              //   console.log(ret.data.length);
+                var leng = ret.data.length;
+                for (var i = 0; i < leng; i++) {
+                  box.innerHTML += `<div class="pad2v bgcf boradius5 mb10">
+                    <div class="fs13 cob3b mb25">
+                      <span>2019-06-26 10:55:19</span>&nbsp;<span>记录</span>
+                    </div>
+                    <div class="fs14 co666 clearfix mb15">
+                      <div class="fl wid50 coreds"><span>变动：</span><span>${ret.data[i].amount}</span></div>
+                      <div class="fl wid50"><span>余额：</span><span>${ret.data[i].total_amount}</span></div>
+                    </div>
+                    <div class="fs14 co666 mb5">
+                      <span>说明：</span><span>${ret.data[i].remark }</span>
+                    </div>
+                  </div>`
+                }
+            }
+        });
+
+      };
+  </script>
+  </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>财务明细</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          .header{
+            height: 40px;
+            line-height: 40px;
+          }
+          .iconfont{
+            left: 0
+          }
+          /*导航栏*/
+          .active{
+            color: #F7A812;
+            border-bottom: 1px solid #F7A812;
+          }
+      </style>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div id="header" class="clearfix text-center bgct header fs16 bold">
+        <i onclick="closewin()" class="iconfont pa ml3v">&#xe601;</i>
+        财务明细
+    </div>
+    <!-- 导航栏 -->
+    <div class="just-space fs15 co666 lh45">
+      <div onclick="openFinancial(0)" class="tab-btn active">可售余额</div>
+      <div onclick="openFinancial(1)" class="tab-btn">矿池钱包</div>
+      <div onclick="openFinancial(2)" class="tab-btn">矿池资产</div>
+      <!-- <div onclick="openFinancial(3)" class="tab-btn">旧数据</div> -->
+    </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var tabBtn = document.getElementsByClassName('tab-btn');
+      var len = tabBtn.length;
+      var headerH;
+      apiready = function(){
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH = $api.offset(header);
+        var frames = [];
+        var i = 0;
+        var auiAct = document.getElementsByClassName('aui-active')
+        for ( i; i < len; i++) {
+          frames.push({
+            name: 'financial_frame' + i,
+            url: 'financial_frame' + i + '.html'
+          })
+        }
+            api.openFrameGroup ({
+                name: 'financialGroup',
+                background: '#fff',
+                scrollEnabled: true,
+                rect: {
+                     x: 0,
+                     y: headerH.h + 46,
+                     w: 'auto',
+                     h: 'auto'
+                },
+                index: 0,
+                frames: frames
+            }, function(ret, err){
+                  tabSwich(ret.index)
+                  // fnSetIndex(ret.index)
+            });
+      };
+      //切换导航栏
+      function tabSwich(_index) {
+          var curLi = tabBtn[_index];
+          var j = 0;
+          for (j; j < len; j++) {
+            var thisLi = tabBtn[j];
+            if (thisLi === curLi) {
+              $api.addCls(thisLi, 'active');
+            }else {
+              if ($api.hasCls(thisLi, 'active')) {
+                $api.removeCls(thisLi, 'active');
+              }
+            }
+          }
+      }
+      // //设置可见页
+      // function fnSetIndex(_index) {
+      //   api.setFrameGroupIndex({
+      //       name: 'financialGroup',
+      //       index: _index,
+      //       scroll: true
+      //   });
+      //
+      // }
+      // //隐藏页面
+      // function hideAllFrame(_index) {
+      //     api.setFrameAttr({
+      //         name: 'financial_frame' + _index,
+      //         hidden: true
+      //     });
+      //     api.setFrameGroupAttr({
+      //         name: 'financialGroup',
+      //         hidden: true
+      //     });
+        // }
+      //切换页面
+      function openFinancial(index) {
+        tabSwich(index)
+        // hideAllFrame(index)
+        api.setFrameGroupIndex({
+            name: 'financialGroup',
+            index: index,
+            scroll: true
+        });
+
+      }
+      // //点击切换页面
+      // function openPersonal(index) {
+      //
+      // }
+      //关闭
+      function closewin() {
+        api.closeWin({
+            name: 'financial'
+        });
+
+      }
+  </script>
+  </html>

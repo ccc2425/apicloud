@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>激活账户</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+          .aui-list-item,.aui-list-item-inner{
+            border-bottom: 0px solid #eee;
+          }
+          .aui-list-item-input input{
+            font-size: 14px;
+          }
+          .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+            line-height: 50px;
+          }
+          .sure-btn{
+            width: 34vw;
+            line-height: 35px;
+          }
+          .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+            width: 28%;
+          }
+          /*说明*/
+          .instructions{
+            padding-left: 12vw;
+          }
+          .instructions>li{
+            list-style: initial;
+          }
+      </style>
+  </head>
+  <body>
+      <!-- 表单 -->
+      <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list fs15">
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      等级
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id="level" class="iptcob" type="text" value="一级矿工" disabled="disabled">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      可售余额
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id="balance" class="iptcob" type="text" value="0.0100" disabled="disabled">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      可售额度
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id='amount' class="iptcob" type="text" value="0.00" disabled="disabled">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      激活账号
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id="phone" type="text" placeholder="请输入您需要激活的手机号">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      二级密码
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id="password2" type="password" placeholder="请输入您的二级密码">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      身份证号码
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input id="IDcard" type="text" placeholder="请输入身份证号码">
+                  </div>
+              </div>
+          </li>
+        </ul>
+      </div>
+      <!-- 说明 -->
+      <div>
+        <div class="text-center fs15">
+          <i class="iconfont"></i> 激活说明 <i class="iconfont"></i>
+        </div>
+        <ul class="instructions fs13 lh22">
+          <li>你必须是二级以上矿工</li>
+          <li>激活成功扣除5枚余额</li>
+          <li>被激活账号系统自动赠送2000枚矿池资产</li>
+        </ul>
+      </div>
+      <!-- 按钮 -->
+      <div class="clearfix">
+        <div onclick="sure()" class="sure-btn fs15 boradius40 text-center mt20 fl ml12v bgbtn mb25">
+            提交
+        </div>
+        <div onclick="cansle()" class="sure-btn fs15 boradius40 text-center mt20 fr mr12v can-gradient mb25">
+            取消
+        </div>
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var level = document.getElementById('level');
+      var balance = document.getElementById('balance');
+      var amount = document.getElementById('amount');
+      var quota = document.getElementById('quota');
+      var phone = document.getElementById('phone');
+      var password2 = document.getElementById('password2');
+      var IDcard = document.getElementById('IDcard');
+      apiready = function(){
+        api.ajax({
+            url: ajaxUrl + 'getuserinfo',
+            method: 'post',
+            data: {
+                values: {
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              level.value = ret.data.level + "级矿工";
+              balance.value = ret.data.balance;
+              amount.value = ret.data.amount;
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+            }
+        });
+
+      };
+      //确认
+      function sure() {
+        var phoneVal = phone.value;
+        var password2Val = password2.value;
+        var IDcardVal = IDcard.value;
+        api.ajax({
+            url: ajaxUrl + 'active',
+            method: 'post',
+            data: {
+                values: {
+                    mobile: phoneVal,
+                    id_card: IDcardVal,
+                    password2: password2Val,
+                    token: token
+                }
+            }
+        },function(ret, err){
+          console.log(JSON.stringify(ret));
+          if (ret.errcode === 200) {
+              // console.log(JSON.stringify(ret));
+                alert('激活成功');
+                localStorage.removeItem('active');
+                api.sendEvent({
+                    name: 'loading',
+                    extra: {
+                        state: 'loading',
+                    }
+                });
+                api.closeWin();
+          }else {
+            tishi(ret.msg)
+          }
+        });
+      }
+      //取消
+      function cansle() {
+        api.closeWin();
+      }
+  </script>
+  </html>

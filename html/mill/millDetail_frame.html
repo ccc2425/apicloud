@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <style>
+          body{
+
+          }
+          .mill-img{
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+          }
+          .mill-detail{
+            position: absolute;
+            padding-left: 9.2vw;
+            top:60vh;
+          }
+          .gets{
+            width: 20vw;
+            border-radius: 30px;
+            line-height: 24px;
+            background-color: #FBBD12;
+            color: #fff;
+            text-align: center;
+          }
+          .mill-yuan{
+            width: 56vw;
+            height: 56vw;
+            position: relative;
+            left: 50%;
+            top: 12vh;
+            transform: translateX(-50%);
+          }
+          .header{
+            z-index: 999;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: transparent;
+          }
+          .iconfont{
+            color: #fff;
+            margin-left: 3vw;
+            line-height: 40px;
+            font-size: 20px;
+          }
+      </style>
+  </head>
+  <body>
+    <div id="header" onclick="closewin()" class="header"><i class="iconfont">&#xe601;</i></div>
+    <div class="mill pr">
+      <div class="mill-img">
+        <img src="../../image/mill.gif" alt="">
+      </div>
+      <div class="mill-yuan">
+        <img src="../../image/mill-yuan.gif" alt="">
+      </div>
+      <div id="mill_detail" class="mill-detail">
+      </div>
+    </div>
+    <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var mill_detail = document.getElementById('mill_detail');
+      var nogets = document.getElementsByClassName('nogets');
+      var gets = document.getElementsByClassName('gets');
+      var datas = document.getElementsByClassName('datas');
+      var totalBalance;
+      var Yield;
+      var changes;
+      // var _id;
+      apiready = function(){
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var id = api.pageParam.id;
+        // _id = id;
+        // console.log(id);
+        // fuGetAjaxData()
+        api.ajax({
+            url: ajaxUrl + 'mymachinedetail',
+            method: 'post',
+            data: {
+                values: {
+                    id: id,
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // console.log(JSON.stringify( ret ));
+                // alert( JSON.stringify( ret ) );
+                var isGet = ret.data.is_get;
+                totalBalance = ret.data.total_balance;
+                Yield = ret.data.yield;
+                mill_detail.innerHTML = `<div class="mb83">
+                  <div class="cowhl fs30 bold mb18">
+                    <span id='change'>${ret.data.total_balance}</span>
+                  </div>
+                  <div class="cogry fs15">
+                    可领取：${ret.data.wait_get_balance}
+                  </div>
+                </div>
+                <div class="fs14">
+                  <div class="coyllow mb14">
+                    已领取：${ret.data.get_balance}
+                  </div>
+                  <div class="coyllow mb19">
+                    已运行：${ret.data.run_time}小时
+                  </div>
+                  <div>
+                    <div class="codanger fs13 nogets">
+                      <i class="iconfont fs13">&#xe62d;</i>未满24小时不可领取
+                    </div>
+                    <div onclick="getsBtn(${ret.data.id})" class="gets">领取</div>
+                  </div>
+                </div>`
+                changes = document.getElementById('change');
+                if (isGet === 0) {
+                    nogets[0].style.display = "block";
+                    gets[0].style.display = "none";
+                }else {
+                  nogets[0].style.display = "none";
+                  gets[0].style.display = "block";
+                }
+                // var Yields;
+                Yield = Yield/3600;
+                var totalBalances=Number(totalBalance);
+                // var totalBalancesss;
+                var reload = setInterval(function () {
+                  totalBalances = totalBalances + Yield;
+                  totalBalances = Math.floor(totalBalances*1000000000)/1000000000;
+                  // console.log(totalBalances);
+                  change.innerHTML = totalBalances;
+                },1000);
+            }
+        });
+      };
+      //领取
+      function getsBtn(index) {
+        api.ajax({
+            url: ajaxUrl + 'machinereceive',
+            method: 'post',
+            data: {
+                values: {
+                    id: index,
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              if (ret.errcode === 200) {
+                alert("领取成功");
+                api.sendEvent({
+                  name: 'getsBtc',
+                  extra: {
+                    load: 'loading',
+                  }
+                });
+                api.closeWin();
+              }else {
+                tishi(ret.msg)
+              }
+            }
+        });
+      }
+      //关闭该页面
+      function closewin() {
+        api.closeWin();
+      }
+  </script>
+  </html>

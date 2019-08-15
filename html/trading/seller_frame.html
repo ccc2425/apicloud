@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>卖家资料</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+      <style>
+          body{
+
+          }
+          .aui-list-item-inner {
+              border-bottom: 1px solid #eee;
+          }
+          .aui-list-item-input input {
+              font-size: 14px;
+          }
+          .aui-list .aui-list-item-label,
+          .aui-list .aui-list-item-label-icon {
+              width: 42%;
+              line-height: 41px;
+          }
+          .aui-list-item-img{
+              width: 100%;
+              padding: 2vh 0;
+          }
+          .save{
+            display: inline-block;
+            padding:  0 3vw;
+            margin-bottom: 2vh;
+            border-radius: 30px;
+            border: 1px solid #F6A106;
+            color: #F6A106;
+            line-height: 28px;
+          }
+          .register-btn {
+              width: 88vw;
+              margin: 30px auto;
+              line-height: 40px;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          手机号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="mobile" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          真实姓名
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="names" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          支付宝名称
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="aliname" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          支付宝账号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="aliid" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner border0">
+                      <div class="aui-list-item-label">
+                          支付宝收款码
+                      </div>
+                      <!-- <div class="aui-list-item-input">
+                        <div class="aui-list-item-img">
+                          <img id="alicode" src="" alt="">
+                        </div>
+                      </div> -->
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-input">
+                        <div class="aui-list-item-img mau">
+                          <img id="alicode" src="" alt="">
+                        </div>
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner border0">
+                      <div class="aui-list-item-label">
+                          上传支付凭证
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-input">
+                        <!-- <input type="file" accept="image/*" onchange="getzImg(this)" style="display:none" value="" id="img_z" /> -->
+                        <div class="aui-list-item-img mau">
+                          <img onclick="upAplyImg()" id="aplyimg" src="../../image/nov.png" alt="">
+                        </div>
+                        <!-- <div class="preview fl">
+                          <img src="" alt="" id="ali_receipts">
+                        </div> -->
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <div onclick="openTrading()" class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+          提交
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/zepto.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var mobile = document.getElementById('mobile');
+      var names = document.getElementById('names');
+      var aliname = document.getElementById('aliname');
+      var aliid = document.getElementById('aliid');
+      var alicode = document.getElementById('alicode');
+      var aplyimg = document.getElementById('aplyimg');
+      var imgUrl;
+      var _id;
+      var img_Url;
+      apiready = function(){
+        var id = api.pageParam.id;
+        _id = id;
+        api.ajax({
+            url: ajaxUrl + 'getsellerinfo',
+            method: 'post',
+            data: {
+                values: {
+                    token: token,
+                    id:id
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+                mobile.value = ret.data.mobile;
+                names.value = ret.data.name;
+                aliname.value = ret.data.name;
+                aliid.value = ret.data.ali_account;
+                alicode.src = ret.data.ali_receipt;
+                // alicode.src = "http:///192.168.0.171/static/admin/img/none.png";
+            }
+        });
+
+      };
+      //保存收款码
+      function saveImg() {
+        api.saveMediaToAlbum({
+            path: 'fs://code.png'
+        }, function(ret, err) {
+            if (ret && ret.status) {
+                alert('保存成功');
+            } else {
+                alert('保存失败');
+            }
+        });
+      }
+      //上传支付凭证
+      // function upAplyImg(){
+      //     $('#img_z').click();
+      // }
+      // function getzImg(imgFile){
+      //     // console.log(imgFile);
+      //     var file = imgFile.files[0];
+      //     var reader = new FileReader();
+      //     reader.readAsDataURL(file);//将文件读取为Data URL小文件   这里的小文件通常是指图像与 html 等格式的文件
+      //     reader.onload = function(e){
+      //       // console.log(e.target.result);
+      //       // $('.code').css('display','none')
+      //       // $('.preview').css('display','block')
+      //       $("#aplyimg").attr("src",e.target.result);
+      //       img_Url = e.target.result;
+      //     }
+      //   }
+      function upAplyImg() {
+        api.actionSheet({
+            title: '选择',
+            cancelTitle: '取消',
+            buttons: ['从相册选择']
+        }, function(ret, err) {
+            // var sourceTypes = [
+              // "camera",
+            //   "album"
+            // ];
+            api.getPicture({
+                sourceType: 'album',
+                encodingType: 'jpg',
+                mediaValue: 'pic',
+                destinationType: 'base64',
+                allowEdit: true,
+                quality: 50,
+                // targetWidth: 100,
+                // targetHeight: 100,
+                saveToPhotoAlbum: false
+            }, function(ret, err) {
+              api.imageCache({
+                  url: ret.base64Data
+              }, function(ret, err){
+                  aplyimg.src = ret.url;
+                  imgUrl = ret.url;
+                  // console.log(imgUrl);
+                  //
+                  // var img = imgUrl;//图片路径
+                  // function getBase64Image(img) {
+                  //      var canvas = document.createElement("canvas");
+                  //      canvas.width = img.width;
+                  //      canvas.height = img.height;
+                  //      var ctx = canvas.getContext("2d");
+                  //      ctx.drawImage(img, 0, 0, img.width, img.height);
+                  //      var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+                  //      var dataURL = canvas.toDataURL("image/"+ext);
+                  //      return dataURL;
+                  // }
+                  //     var image = new Image();
+                  //     image.src = img;
+                  //     image.onload = function(){
+                  //     var base64 = getBase64Image(image);
+                  //     img_Url = base64;
+                  //       console.log(base64);
+                  //     }
+              });
+            });
+        });
+      }
+      //提交上传
+      function openTrading() {
+        console.log(imgUrl);
+        api.ajax({
+            // url: img_Url_ + 'index.php/api/common/uploadimg',
+            url: 'http://47.89.185.175/index.php/api/common/uploadimg',
+            method: 'post',
+            data: {
+                values: {
+                    file: imgUrl
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              console.log(JSON.stringify( ret ));
+              console.log(token);
+              var imgId = ret.data.id;
+              console.log(imgId);
+              api.ajax({
+                  url: ajaxUrl + 'certificate',
+                  method: 'post',
+                  data: {
+                      values: {
+                          certificate: imgId,
+                          id: _id,
+                          token: token
+                      }
+                  }
+              },function(ret, err){
+                  if (ret) {
+                    console.log(JSON.stringify( ret ));
+                    if( ret.errcode === 200){
+
+                      api.sendEvent({
+                        name: 'loadingtry2',
+                        extra: {
+                          state: 'loading'
+                        }
+                      });
+                      api.closeWin();
+                    }else {
+                      tishi(ret.msg)
+                    }
+                    // console.log(JSON.stringify( ret ));
+                    //   alert( JSON.stringify( ret ) );
+                  }
+              });
+            }
+        });
+      }
+  </script>
+  </html>

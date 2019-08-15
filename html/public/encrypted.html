@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>绑定密保</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          .header{
+            height: 40px;
+            line-height: 40px;
+          }
+          .iconfont{
+            left: 0
+          }
+      </style>
+  </head>
+  <body>
+    <!-- 头部 -->
+    <div id="header" class="clearfix text-center bgct header fs16 bold">
+        <!-- <i onclick="openHome()" class="iconfont pa ml3v">&#xe601;</i> -->
+        绑定密保
+    </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var tokens = api.pageParam.token;
+        console.log(tokens);
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header);
+          api.openFrame({
+              name: 'encrypted_frame',
+              url: './encrypted_frame.html',
+              rect: {
+                  x: 0,
+                  y: headerH.h,
+                  w: 'auto',
+                  h: 'auto'
+              },
+              pageParam: {
+                  tokens: tokens
+              },
+              bounces: false,
+          });
+          //发送监听关闭上一页面
+          api.sendEvent({
+              name: 'closeregister',
+              extra: {
+              }
+          });
+      // };
+      // function openHome() {
+      //   api.openWin({
+      //       name: 'indexhome',
+      //       url: '../../indexhome.html',
+      //       pageParam: {
+      //           name: 'test'
+      //       }
+      //   });
+        //发送刷新首页
+        api.sendEvent({
+            name: 'indexRoad',
+            extra: {
+            }
+        });
+      }
+  </script>
+  </html>

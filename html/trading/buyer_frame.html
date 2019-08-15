@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>买家资料</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+      <style>
+          body{
+
+          }
+          .aui-list-item-inner {
+              border-bottom: 1px solid #eee;
+          }
+          .aui-list-item-input input {
+              font-size: 14px;
+          }
+          .aui-list .aui-list-item-label,
+          .aui-list .aui-list-item-label-icon {
+              width: 42%;
+              line-height: 41px;
+          }
+          .register-btn {
+              width: 88vw;
+              margin: 30px auto;
+              line-height: 40px;
+          }
+          .preview{
+            width: 100%;
+            /*padding: 10px;*/
+          }
+          img[src=""],img:not([src]){
+              opacity:0;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          手机号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="mobile" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          真实姓名
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="name" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          支付宝账号
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="alinum" class="iptcob" type="text" disabled value="">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner border0">
+                  <div class="aui-list-item-label">
+                    支付凭证
+                  </div>
+                  <!-- <div class="aui-list-item-input">
+                    <div class="preview fl">
+                      <img src="" alt="" id="ali_receipts">
+                    </div>
+                  </div> -->
+                </div>
+              </li>
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                  <div class="aui-list-item-input">
+                    <div class="preview mau">
+                      <img src="" alt="" id="ali_receipts">
+                    </div>
+                    <!-- <input class="iptcob" type="text" disabled placeholder="刘小松"> -->
+                  </div>
+                </div>
+              </li>
+          </ul>
+      </div>
+      <div onclick="openTrading()" class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+          确认
+      </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+        // var a;
+      var token = localStorage.getItem("token");
+      var mobile = document.getElementById('mobile');
+      var names = document.getElementById('name');
+      var alinum = document.getElementById('alinum');
+      var ali_receipts = document.getElementById('ali_receipts');
+      var _index;
+      var _sta;
+      apiready = function(){
+        var index = api.pageParam.index;
+        var sta = api.pageParam.sta;
+        _index = index;
+        _sta = sta;
+        api.ajax({
+            url: ajaxUrl + 'getbuyerinfo',
+            method: 'post',
+            data: {
+                values: {
+                    id: index,
+                    token: token,
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // alert(JSON.stringify(ret));
+              // console.log(JSON.stringify(ret));
+                mobile.value = ret.data.mobile;
+                names.value = ret.data.name;
+                alinum.value = ret.data.ali_account;
+                ali_receipts.src = ret.data.certificate;
+                // ali_receipts.src = 'http://192.168.0.171/static/admin/img/none.png';
+            }
+        });
+      };
+      //关闭该页面，发送监听给卖出页面
+      function openTrading() {
+        console.log(_index);
+        // a++;
+        // console.log(a);
+        api.ajax({
+            url: ajaxUrl + 'sell',
+            method: 'post',
+            data: {
+                values: {
+                    id: _index,
+                    token:token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // if
+              console.log(JSON.stringify(ret));
+                if (_sta === '0') {
+                  api.closeWin()
+                }else {
+                  alert(ret.msg);
+                  api.sendEvent({
+                    name: 'loadingtry3',
+                    extra: {
+                      state: 'loading',
+                    }
+                  });
+                  // console.log(1);
+                  api.closeWin()
+                }
+            }
+        });
+
+      }
+
+  </script>
+  </html>

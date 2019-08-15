@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          body{
+            background-color: #eee;
+          }
+          .team-top{
+            height: 90px;
+            padding-left: 5vw;
+          }
+          .news-list{
+            width: 90vw;
+            margin: 10px auto;
+          }
+          .news-list{
+              position: relative;
+              top: -43px;
+          }
+          .bgct{
+            background-color: #FCBC15;
+          }
+      </style>
+  </head>
+  <body>
+      <!-- 头部 -->
+      <div class="team-top bgct lh50 fs16 bold">
+          团队算力：<span id="allcal"></span>
+      </div>
+      <!-- 信息 -->
+      <div id="box">
+        <!-- <div class="news-list bgcf boradius10 pad16a3v">
+            <div class="fs16 bold">
+              会员账号：18227679393
+            </div>
+            <div class="cogry clearfix fs13 lh38 borderb1e">
+              <div class="fl mr10v">
+                姓名：万小强
+              </div>
+              <div class="fl">
+                等级：一级矿工
+              </div>
+            </div>
+            <div class="just-space text-center bold lh20 mt16">
+              <div>
+                <span class="fs20">0</span></br><span>直推</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>团队算力</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>注册人数</span>
+              </div>
+            </div>
+        </div>
+        <div class="news-list bgcf boradius10 pad16a3v">
+            <div class="fs16 bold">
+              会员账号：18227679393
+            </div>
+            <div class="cogry clearfix fs13 lh38 borderb1e">
+              <div class="fl mr10v">
+                姓名：万小强
+              </div>
+              <div class="fl">
+                等级：一级矿工
+              </div>
+            </div>
+            <div class="just-space text-center bold lh20 mt16">
+              <div>
+                <span class="fs20">0</span></br><span>直推</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>团队算力</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>注册人数</span>
+              </div>
+            </div>
+        </div>
+        <div class="news-list bgcf boradius10 pad16a3v">
+            <div class="fs16 bold">
+              会员账号：18227679393
+            </div>
+            <div class="cogry clearfix fs13 lh38 borderb1e">
+              <div class="fl mr10v">
+                姓名：万小强
+              </div>
+              <div class="fl">
+                等级：一级矿工
+              </div>
+            </div>
+            <div class="just-space text-center bold lh20 mt16">
+              <div>
+                <span class="fs20">0</span></br><span>直推</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>团队算力</span>
+              </div>
+              <div>
+                <span class="fs20">0</span></br><span>注册人数</span>
+              </div>
+            </div>
+        </div> -->
+      </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var box = document.getElementById('box');
+      var allcal = document.getElementById('allcal');
+      apiready = function(){
+        api.ajax({
+            url: ajaxUrl + 'myteam',
+            method: 'post',
+            data: {
+                values: {
+                    token: token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+                // console.log(JSON.stringify( ret ));
+                // alert( JSON.stringify( ret ) );
+                allcal.innerText = ret.data.total_cal
+                var length = ret.data.list.length
+                for (var i = 0; i < length; i++) {
+                  box.innerHTML += `<div class="news-list bgcf boradius10 pad16a3v">
+                      <div class="fs16 bold">
+                        会员账号：${ret.data.list[i].mobile}
+                      </div>
+                      <div class="cogry clearfix fs13 lh38 borderb1e">
+                        <div class="fl mr10v">
+                          姓名：${ret.data.list[i].name}
+                        </div>
+                        <div class="fl">
+                          等级：${ret.data.list[i].level_name}
+                        </div>
+                      </div>
+                      <div class="just-space text-center bold lh20 mt16">
+                        <div>
+                          <span class="fs20">${ret.data.list[i].direct_num}</span></br><span>直推</span>
+                        </div>
+                        <div>
+                          <span class="fs20">${ret.data.list[i].cal}</span></br><span>算力</span>
+                        </div>
+                        <div>
+                          <span class="fs20">${ret.data.list[i].reg_num}</span></br><span>注册人数</span>
+                        </div>
+                      </div>
+                  </div>`
+                }
+            }
+        });
+
+      };
+  </script>
+  </html>

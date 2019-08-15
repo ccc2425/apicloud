@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>新闻公告</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui-pull-refresh.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+          .aui-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background: #ff2600;
+            border-radius: 0.5rem;
+            position: absolute;
+            top: 0;
+            right: -10px;
+            z-index: 99;
+          }
+      </style>
+  </head>
+  <body>
+        <div id="content" class="pad2v">
+            <!-- <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    涨价时间调整通知
+                    <div class="aui-dot"></div>
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-29</span>&nbsp;&nbsp;<span>22:24:47</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    关于激活一级账号及奖励政策公告
+                    <div class="aui-dot"></div>
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    关于激活一级账号及奖励政策公告
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+              <div class="fs16 bold pr i-l lh24">
+                  关于激活一级账号及奖励政策公告
+              </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    关于激活一级账号及奖励政策公告
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    关于激活一级账号及奖励政策公告
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div>
+            <div onclick="openDetailNews(0)" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                <div class="fs16 bold pr i-l lh24">
+                    关于激活一级账号及奖励政策公告
+                </div>
+                <div class="fs12 co999 lh20">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+            </div> -->
+        </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/aui-pull-refresh.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var token = localStorage.getItem("token");
+        console.log(token);
+        var content = $api.byId('content');
+          api.ajax({
+              url: ajaxUrl + 'news',
+              method: 'post',
+              data: {
+                  values: {
+                      token: token
+                  }
+              }
+          },function(ret, err){
+              if (ret) {
+                var auiDot = document.getElementsByClassName('aui-dot');
+                console.log(JSON.stringify(ret));
+                var _data = ret.data.data;
+                console.log(JSON.stringify(_data));
+                var auiDot = document.getElementsByClassName('aui-dot');
+                console.log( _data.length);
+                for (var i = 0; i < _data.length; i++) {
+                  content.innerHTML += `<div onclick="openDetailNews(${_data[i].id})" class="mb10 pad10a3v bgcf boradius5 wid90v">
+                  <div class="fs16 bold pr i-l lh24">
+                  ${_data[i].title}
+                  <div class="aui-dot"></div>
+                  </div>
+                  <div class="fs12 co999 lh20">
+                  <span>2019-05-29</span>&nbsp;&nbsp;<span>22:24:47</span>
+                  </div>
+                  </div>`;
+                  if (_data[i].read === 1) {
+                    var index = i;
+                    auiDot[index].style.display = "none";
+                  }
+                }
+              }
+          });
+          //刷新
+          api.addEventListener({
+              name: 'loadnotice'
+          }, function(ret, err){
+              if( ret ){
+                   window.location.reload()
+              }
+          });
+      };
+      function openDetailNews(index) {
+        api.openWin({
+            name: 'detailnews',
+            url: './detailnews.html',
+            pageParam: {
+                index: index
+            }
+        });
+      }
+      //下拉刷新
+      var pullRefresh = new auiPullToRefresh({
+  			container: document.querySelector('body'),
+  			triggerDistance: 100
+  		},function(ret){
+  			if(ret.status=="success"){
+  				setTimeout(function(){
+            window.location.reload()
+  					pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+  				},1500)
+  			}
+  		})
+  </script>
+  </html>

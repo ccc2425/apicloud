@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>注册</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          .header{
+            height: 40px;
+            line-height: 40px;
+          }
+          .iconfont{
+            left: 0
+          }
+      </style>
+  </head>
+  <body>
+      <!-- 头部 -->
+      <div id="header" class="clearfix text-center bgct header fs16 bold">
+          <i onclick="closewin()" class="iconfont pa ml3v">&#xe601;</i>
+          注册
+      </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var headerH = $api.offset(header);
+        api.openFrame({
+            name: 'register_frame',
+            url: './register_frame.html',
+            rect: {
+                x: 0,
+                y: headerH.h,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                name: 'test'
+            },
+            bounces: false,
+        });
+          // 监听页面消失的时候，关掉页面就可以了
+         api.addEventListener({
+             name:'closeregister'
+         },function(ret){
+              closewin()
+         });
+      };
+      //
+      function closewin() {
+        api.closeWin({
+            name: 'register'
+        });
+      }
+  </script>
+  </html>

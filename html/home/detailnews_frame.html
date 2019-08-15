@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>公告详情</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+          .box{
+            width: 96vw;
+            margin: 2vw;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="box">
+      <div id="box" class="pad3v bgcf ma lh24">
+          <!-- <div class="fs16 bold text-center">
+              关于激活一级账号及奖励政策公告
+          </div>
+          <div class="fs12 co999 lh20 text-center">
+              <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+          </div>
+          <div class="fs13 co0a0">
+            <p>尊敬的CBT原始矿工，平台兢兢业业、励精图治只为给广大矿工提供真实有效最好的交易环境，恶意注册捣乱分子在CBT绝对没有容身之处，为严厉打击这一乱象，运营团队特制订如下奖励政策：</p>
+            <p>【1】凡一级矿工均需求助“二级矿工”以上推荐人或好友激活账号，激活成功后开启买卖交易功能，激活需扣除推荐人或好友五个可售余额+五个可售额度。</p>
+            <p>【2】新激活账号均可获得平台额外奖励“500枚矿池资产+10枚可售额度”。</p>
+            <p>【3】 本次更新将于4月16日21:00后进行不关网升级。</p>
+            </br>
+            <p class="text-right">--比特币矿工联盟</p>
+          </div> -->
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var index = api.pageParam.index;
+        var token = localStorage.getItem("token");
+        var box = $api.byId('box');
+        api.ajax({
+            url: ajaxUrl + 'newsdetail?id=' + index + '&token=' + token,
+            method: 'post',
+            data: {
+                values: {
+                    id: index,
+                    token:token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              console.log(JSON.stringify( ret ));
+                box.innerHTML = `<div class="fs16 bold text-center">
+                    ${ret.data.data}
+                </div>
+                <div class="fs12 co999 lh20 text-center">
+                    <span>2019-05-20</span>&nbsp;&nbsp;<span>12:24:41</span>
+                </div>
+                <div class="fs13 co0a0">
+                  <p>${ret.data.data}</p>
+                </div>`
+            }
+        });
+
+      };
+  </script>
+  </html>

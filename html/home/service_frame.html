@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>在线客服</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+          .serve-head{
+            width: 18vw;
+            height: 18vw;
+          }
+          .code-img{
+            width: 80vw;
+            margin: 6vw auto;
+            padding: 4vw;
+          }
+          .lh10vw{
+            line-height: 10vw;
+          }
+          .lh6vw{
+            line-height: 6vw;
+          }
+          .mb2vw{
+            margin-bottom: 2vw;
+          }
+      </style>
+  </head>
+  <body>
+    <div id="codeImg" class="code-img bgcf">
+    </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var codeImg = $api.byId('codeImg');
+        api.ajax({
+            url: ajaxUrl + 'getmain',
+            method: 'get',
+            data: {
+
+            }
+        },function(ret, err){
+            if (ret) {
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+                codeImg.innerHTML = `<div class="clearfix mb15">
+                  <div class="fl mr3v serve-head">
+                      <img src="${img_Url_ + ret.data.service_wx_head}" alt="">
+                  </div>
+                  <div class="fl iform">
+                    <div class="fs16 lh10vw mb2vw">${ret.data.service_wx_nickname}<i class="iconfont icon-woman">&#xe602;</i></div>
+                    <div class="fs13 lh6vw co999">${ret.data.service_wx_city}</div>
+                  </div>
+                </div>
+                <div class="">
+                  <img src="${img_Url_ + ret.data.service_wx_ercode}" alt="">
+                </div>`
+            }
+        });
+      };
+  </script>
+  </html>

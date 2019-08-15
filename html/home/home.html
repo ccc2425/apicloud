@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>首页</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/iconfont.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui-slide.css" /><!--轮播组件-->
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          .topimg{
+            width: 100vw;
+            height: 180px;
+          }
+          .aui-grid-img{
+            width: 50px;
+            height: 50px;
+            margin: auto;
+          }
+          .aui-grid .aui-grid-label{
+            font-size: 12px;
+          }
+          .mill{
+            padding: 10px 2vw;
+          }
+          .mill-img{
+            width: 145px;
+            height: 120px;
+          }
+          .rent{
+            display: inline-block;
+            padding: 2px 27px;
+            color: #fff;
+            background: linear-gradient(#FFBF44,#F6A005);
+            border-radius: 30px;
+          }
+          .rent:active{
+            background: linear-gradient(#F6A005,#FFBF44);
+          }
+          /*弹窗*/
+          .alerts{
+            display: none;
+          }
+          .alert-box{
+            z-index: 8;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .alert{
+            z-index: 9;
+            position: fixed;
+            top: 24vh;
+            left: 14vw;
+            width: 72vw;
+          }
+          .alert-bg{
+            width: 100%;;
+            height: 242px;
+            background: url(../../image/alert-b.png) no-repeat;
+            background-size: 100% 100%;
+          }
+          .alert-tit{
+              line-height: 85px;
+          }
+          .alert-text{
+              line-height: 85px;
+          }
+          .alert-sure{
+              width: 80%;
+              margin: auto;
+              line-height: 50px;
+              border-radius: 30px;
+          }
+          .alert-canle{
+            width: 8vw;
+            margin: 15px auto;
+          }
+      </style>
+  </head>
+  <body>
+    <!-- 轮播图 -->
+    <!-- <div id="aui-slide">
+        <div id="banner" class="aui-slide-wrap" >
+            <div class="aui-slide-node bg-dark">
+                <img src="../../image/ban1.png" />
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../../image/ban1.png" />
+            </div>
+            <div class="aui-slide-node bg-dark">
+                <img src="../../image/ban1.png" />
+            </div>
+        </div>
+        <div class="aui-slide-page-wrap"></div>
+    </div> -->
+    <div class="topimg">
+      <img src="../../image/b1.png" />
+    </div>
+    <!-- 分类导航栏 -->
+    <div class="aui-grid mb10">
+        <div class="aui-row">
+            <div onclick="signIn()" class="aui-col-xs-3">
+                <div class="aui-grid-img">
+                  <img src="../../image/a1.png" alt="">
+                </div>
+                <div class="aui-grid-label">我要签到</div>
+            </div>
+            <div onclick="openNotice()" class="aui-col-xs-3">
+              <div class="aui-grid-img">
+                <img src="../../image/a2.png" alt="">
+              </div>
+              <div class="aui-grid-label">新闻公告</div>
+            </div>
+            <div onclick="openPromoteCode()" class="aui-col-xs-3">
+              <div class="aui-grid-img">
+                <img src="../../image/a3.png" alt="">
+              </div>
+              <div class="aui-grid-label">推广二维码</div>
+            </div>
+            <div onclick="openService()" class="aui-col-xs-3">
+              <div class="aui-grid-img">
+                <img src="../../image/a4.png" alt="">
+              </div>
+              <div class="aui-grid-label">在线客服</div>
+            </div>
+        </div>
+    </div>
+    <!-- 矿机商城 -->
+    <div class="mill bgcf">
+      <div class="mill-tit fs15 bold">
+          <i class="iconfont mr1v">&#xe6c7;</i>矿机商城
+      </div>
+      <div>
+          <div class="aui-row">
+            <div class="aui-col-xs-6 text-center mill-box">
+              <div class="mill-img mau">
+                <img src="../../image/k1.png" alt="">
+              </div>
+              <div class="mill-txt fs13">
+              </div>
+            </div>
+            <div class="aui-col-xs-6 text-center mill-box">
+              <div class="mill-img mau">
+                <img src="../../image/k2.png" alt="">
+              </div>
+              <div class="mill-txt fs13">
+              </div>
+            </div>
+            <div class="aui-col-xs-6 text-center mill-box">
+              <div class="mill-img mau">
+                <img src="../../image/k3.png" alt="">
+              </div>
+              <div class="mill-txt fs13">
+              </div>
+            </div>
+            <div class="aui-col-xs-6 text-center mill-box">
+              <div class="mill-img mau">
+                <img src="../../image/k4.png" alt="">
+              </div>
+              <div class="mill-txt fs13">
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- 签到弹窗 -->
+    <div class="alerts">
+      <div class="alert-box"></div>
+      <div class="alert">
+        <div class="alert-bg text-center fs16">
+            <div class="alert-tit bold">提示</div>
+            <div class="alert-text">签到成功!</div>
+            <div onclick="sureSign()" class="bgbtn alert-sure">确定</div>
+        </div>
+        <div onclick="cansle()" class="alert-canle">
+          <img src="../../image/alert-n.png" alt="">
+        </div>
+      </div>
+    </div>
+    <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript" src="../../script/aui-slide.js"></script><!--轮播组件-->
+  <script type="text/javascript">
+    // var  millBox = document.getElementsByClassName(' mill-box');
+    var millTxt = document.getElementsByClassName(' mill-txt');
+    var token = localStorage.getItem("token");
+    var Errcode;
+    // var banner = document.getElementById('banner');
+      apiready = function(){
+        Errcode = api.pageParam.Errcode;
+        //获取轮播图
+        // api.ajax({
+        //     url: ajaxUrl + 'banner',
+        //     method: 'post',
+        //     data: {
+        //         values: {
+        //
+        //         }
+        //     }
+        // },function(ret, err){
+        //     if (ret) {
+        //       var bannerLeng = ret.data.data.length;
+        //       console.log(JSON.stringify( ret ));
+        //       for (var i = 0; i < bannerLeng; i++) {
+        //         banner += `<div class="aui-slide-node bg-dark">
+        //             <img src="${ret.data.data[i].url}" />
+        //         </div>`
+        //       }
+        //     } else {
+        //         alert( JSON.stringify( err ) );
+        //     }
+        // });
+
+        //获取矿机数据
+        api.ajax({
+            url: ajaxUrl + 'machine',
+            method: 'post',
+            data: {
+                values: {
+
+                }
+            }
+        },function(ret, err){
+          for (var i = 0; i < millTxt.length; i++) {
+            millTxt[i].innerHTML = `<div><p class="fs15 bold">${ret.data[i].name}</p>
+            <p class="cogry">产量/小时：${ret.data[i].yield}</p>
+            <p class="cored">价格：${ret.data[i].rent}矿池钱包</p>
+            <p onclick="rentBtn(${ret.data[i].id})" class="fs14 rent">立即租用</p></div>`
+          }
+        });
+        //监听登录界面刷新首页
+        api.addEventListener({
+            name: 'loading'
+        }, function(ret, err){
+          if (ret.value.state === 'loading') {
+              window.location.reload();//刷新页面/
+            }
+        });
+      };
+      // //轮播图
+      // var slide = new auiSlide({
+      //       container:document.getElementById("aui-slide"),
+      //       // "width":300,
+      //       "height":180,
+      //       "speed":300,
+      //       "autoPlay": 1000,
+      //       "pageShow":true,
+      //       "pageStyle":'dot',
+      //       "loop":true,
+      //       'dotPosition':'center',
+      //       currentPage:currentFun
+      //   })
+      //   function currentFun(index) {
+      //       // console.log(index);
+      //   }
+      //矿机租用
+      function rentBtn(index) {
+        console.log(1);
+        api.ajax({
+            url: ajaxUrl + 'machinerent',
+            method: 'post',
+            data: {
+                values: {
+                    id: index,
+                    token:token
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              console.log(JSON.stringify(ret));
+              if (ret.errcode === 2006) {
+                localStorage.removeItem('token');
+                var tokens = ret.data.token;
+                token = tokens;
+                storage=window.localStorage;
+                storage.token = token;
+              } else if (ret.errcode === 200) {
+                api.sendEvent({
+                  name: 'mymill',
+                  extra: {
+                    load: 'loading',
+                  }
+                });
+              }
+              tishi(ret.msg)
+
+              // console.log(JSON.stringify( ret ));
+              //   alert( JSON.stringify( ret ) );
+            }
+        });
+
+      }
+        //新闻公告
+        function openNotice() {
+          api.openWin({
+              name: 'notice',
+              url: './notice.html',
+              pageParam: {
+                  name: 'test'
+              }
+          });
+        }
+        //推广二维码
+        function openPromoteCode() {
+          api.openWin({
+              name: 'promotecode',
+              url: './promotecode.html',
+              pageParam: {
+                  name: 'test'
+              }
+          });
+        }
+        //在线客服
+        function openService() {
+          api.openWin({
+              name: 'service',
+              url: './service.html',
+              pageParam: {
+                  name: 'test'
+              }
+          });
+        }
+        //签到
+        var alerts = document.getElementsByClassName('alerts')
+        function signIn() {
+          if (Errcode === 2006 ) {
+            alert("帐户尚未认证,请先去认证")
+            var certVal = 0;
+            api.openWin({
+                name: 'realname',
+                url: '../vip/realname.html',
+                pageParam: {
+                    Errcode: Errcode,
+                    token:token,
+                    certVal:certVal
+                }
+            });
+          } else {
+            api.ajax({
+              url: ajaxUrl + "sign?token=" + token,
+              method: 'post',
+              data: {
+                values: {
+                  token: token
+                }
+              }
+            },function(ret, err){
+              if (ret) {
+                if (ret.errcode === 2004 ) {
+                  alert("帐户尚未认证,请先去激活");
+                  api.openWin({
+                      name: 'activation',
+                      url: '../vip/activation.html',
+                      pageParam: {
+                          token: token
+                      }
+                  });
+                }else {
+                  var alertBg = document.getElementsByClassName('alert-bg');
+                  alertBg[0].innerHTML = `<div class="alert-tit bold">提示</div>
+                  <div class="alert-text">${ret.msg}</div>
+                  <div onclick="sureSign()" class="bgbtn alert-sure">确定</div>`
+                  alerts[0].style.display = "block";
+                }
+              }
+            });
+          }
+        }
+        //签到确定
+        var alertSure = document.getElementsByClassName('alert-sure')
+        function sureSign() {
+          alerts[0].style.display = "none";
+        }
+        //签到取消
+        var alertCansle = document.getElementsByClassName('alert-canle')
+        function cansle() {
+          alerts[0].style.display = "none";
+        }
+        //接口调试
+
+  </script>
+  </html>

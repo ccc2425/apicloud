@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>确认卖出</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+      <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+      <style>
+          body{
+
+          }
+          .aui-list-item-inner {
+              border-bottom: 1px solid #eee;
+          }
+          .aui-list-item-input input {
+              font-size: 14px;
+          }
+          .aui-list .aui-list-item-label,
+          .aui-list .aui-list-item-label-icon {
+              width: 42%;
+              line-height: 41px;
+          }
+          .register-btn {
+              width: 88vw;
+              margin: 30px auto;
+              line-height: 40px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="bgcf fs13">
+      <div class="lh35 fs16 pad0a3v">订单状态：等待收款</div>
+      <div class="lh50 pad0a3v">确认收款码?</div>
+      <div class="lh24 pad0a3v">请先查看对方的汇款截图，如有问题或者没有收到请留意处理</div>
+    </div>
+      <div class="aui-content aui-margin-b-15">
+          <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          身份证
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="idcard" type="number" placeholder="请输入身份证号">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          二级密码
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="password" type="number" placeholder="请输入您的二级密码">
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <div onclick="openTrading()" class="register-btn fs16 boradius40 text-center mt30 bgbtn">
+          确认收款
+      </div>
+      <span class="tishio"></span>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      var idcard = document.getElementById('idcard');
+      var password = document.getElementById('password');
+      var _id;
+      apiready = function(){
+        var index = api.pageParam.index;
+        _id = index;
+      };
+      function openTrading() {
+        var passwordVal = password.value;
+        var idcardVal = idcard.value;
+        console.log(_id);
+        console.log(token);
+        console.log(idcardVal);
+        console.log(passwordVal);
+        api.ajax({
+            url: ajaxUrl + 'confrimsell',
+            method: 'post',
+            data: {
+                values: {
+                    id: _id,
+                    token: token,
+                    id_card: idcardVal,
+                    password2: passwordVal
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              // alert('sucess')
+                // console.log(JSON.stringify( ret ));
+                // alert( JSON.stringify( ret ) );
+                if (ret.errcode === 200) {
+                  alert(ret.msg);
+                  api.sendEvent({
+                      name: 'mytrad',
+                      extra: {
+                          load: 'loading',
+                      }
+                  });
+                  api.sendEvent({
+                      name: 'closewin',
+                      extra: {
+                          close: 'win',
+                      }
+                  });
+                  api.closeToWin({
+                      name: 'indexhome'
+                  });
+
+                  // api.closeWin()
+                }else {
+                  tishi(ret.msg)
+                }
+            }else {
+              // alert('fail')
+              console.log(JSON.stringify(err));
+            }
+        });
+
+      }
+  </script>
+  </html>

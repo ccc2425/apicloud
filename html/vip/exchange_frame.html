@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>兑换管理</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          html,body{
+            background-color: #eee;
+          }
+          .buy{
+            width: 95vw;
+            margin: 16px auto;
+            border-radius: 10px;
+          }
+          .aui-list-item,.aui-list-item-inner{
+            border-bottom: 0px solid #eee;
+          }
+          .aui-list-item-input input{
+            font-size: 13px;
+          }
+          .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+            line-height: 41px;
+          }
+          .sure-btn{
+            width: 34vw;
+            line-height: 35px;
+          }
+          .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon{
+            width: 28%;
+          }
+      </style>
+  </head>
+  <body>
+        <div class="buy bgcf">
+          <div class="wait-tit fs15 lh45 padl2v bold">
+            可售余额兑换矿池钱包<i class="iconfont"></i>
+          </div>
+          <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          可售余额
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="balances" class="iptcob" type="text" value="" disabled="disabled">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          兑换数量
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="balance_num" type="text" placeholder="10起10的倍数">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          二级密码
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="password1" type="password" placeholder="请输入二级密码">
+                      </div>
+                  </div>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix">
+            <div onclick="balanceBtn()" class="sure-btn fs15 boradius40 text-center mt20 fl ml12v bgbtn mb25">
+                确认存入
+            </div>
+            <div onclick"cansle()" class="sure-btn fs15 boradius40 text-center mt20 fr mr12v can-gradient mb25">
+                取消
+            </div>
+          </div>
+        </div>
+        <div class="buy bgcf mt10">
+          <div class="wait-tit fs15 lh45 padl2v bold">
+            信用资产兑换可售额度<i class="iconfont"></i>
+          </div>
+          <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-form-list fs15">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          信用资产
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="credits" class="iptcob" type="text" value="" disabled="disabled">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          兑换数量
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="credit_num" type="text" placeholder="100的倍数（100信用资产=0.5可售额度）">
+                      </div>
+                  </div>
+              </li>
+              <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          二级密码
+                      </div>
+                      <div class="aui-list-item-input">
+                          <input id="password2" type="password" placeholder="请输入二级密码">
+                      </div>
+                  </div>
+              </li>
+            </ul>
+          </div>
+          <div class="clearfix">
+            <div onclick="creditBtn()" class="sure-btn fs15 boradius40 text-center mt20 fl ml12v bgbtn mb25">
+                确认存入
+            </div>
+            <div onclick"cansle()" class="sure-btn fs15 boradius40 text-center mt20 fr mr12v can-gradient mb25">
+                取消
+            </div>
+          </div>
+        </div>
+        <span class="tishio"></span>
+
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <script type="text/javascript">
+      var token = localStorage.getItem("token");
+      // var balanceVal;
+      // var creditVal;
+      // alert(balanceVal);
+      // alert(creditVal);
+      apiready = function(){
+        var balanceVal = api.pageParam.balanceVal;
+        var creditVal = api.pageParam.creditVal;
+        // alert(balanceVal);
+        // alert(creditVal);
+        balances.value = balanceVal + "枚";
+        credits.value = creditVal;
+      };
+      //可售余额兑换
+      function balanceBtn() {
+        var balanceNum = $api.byId('balance_num');
+        var password1 = $api.byId('password1');
+        var balanceNumVal = balanceNum.value;
+        var password1Val = password1.value;
+        api.ajax({
+            url: ajaxUrl + 'balancetowallet',
+            method: 'post',
+            data: {
+                values: {
+                  balance:balanceNumVal,
+                  password2:password1Val,
+                  token: token
+                },
+            }
+        },function(ret, err){
+            tishi(ret.msg)
+            balanceNum.value = "";
+            password1.value = "";
+        })
+      }
+      //信用资产兑换
+      function creditBtn() {
+        var creditNum = $api.byId('credit_num');
+        var password2 = $api.byId('password2');
+        var creditNumVal = creditNum.value;
+        var password2Val = password2.value;
+        api.ajax({
+            url: ajaxUrl + 'credittoamount',
+            method: 'post',
+            data: {
+                values: {
+                  credit:creditNumVal,
+                  password2:password2Val,
+                  token: token
+                },
+            }
+        },function(ret, err){
+            console.log(JSON.stringify(ret));
+            alert(JSON.stringify(ret));
+            tishi(ret.msg)
+            creditNum.value = "";
+            password2.value = "";
+        })
+      }
+      //取消
+      function cansle() {
+        api.closeWin();
+      }
+  </script>
+  </html>

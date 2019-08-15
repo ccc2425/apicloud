@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>我的矿机</title>
+      <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
+      <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+      <style>
+          /*导航切换*/
+          .aui-tab-item{
+            width: 20%;
+            height: 45px;
+            font-size: 15px;
+            line-height: 45px;
+          }
+          /*.aui-tab-item.aui-active{
+            color: #F6A211;
+            border-bottom: 2px solid #F6A211;
+          }*/
+      </style>
+  </head>
+  <body>
+    <div class="aui-tab just-space" id="tab">
+      <div onclick="clickTabCheck(0)" tapmode class="aui-tab-item aui-active">正常矿机</div>
+      <div onclick="clickTabCheck(1)" tapmode class="aui-tab-item">过期矿机</div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../script/api.js"></script>
+  <!-- <script type="text/javascript" src="../../script/aui-tab.js" ></script> -->
+  <script type="text/javascript">
+      var headerH;
+      var tabH;
+      var auiTab;
+        //
+      apiready = function(){
+        headerH = api.pageParam.headerH
+        var tabs = $api.byId('tab');
+        tabH = $api.offset(tabs);
+        var frames = [];
+        auiTab = document.getElementsByClassName('aui-tab-item')
+        // var auiAct = document.getElementsByClassName('aui-active')
+        for (var i = 1; i <= auiTab.length; i++) {
+          frames.push({
+            name: 'mill_frame' + i,
+            url: 'mill_frame' + i + '.html'
+          })
+        }
+        api.openFrameGroup ({
+            name: 'millGtoup',
+            background: '#fff',
+            scrollEnabled: true,
+            rect: {
+                 x: 0,
+                 y: headerH + tabH.h,
+                 w: 'auto',
+                 h: api.frameHeight - 52
+            },
+            index: 0,
+            frames: frames
+        }, function(ret, err){
+          checkTab(ret.index)
+        });
+      };
+      //切换点击
+      function checkTab(index) {
+        var len = auiTab.length;
+        var curLi = auiTab[index];
+        var j = 0;
+        for (j; j < len; j++) {
+          var thisLi = auiTab[j];
+          if (thisLi === curLi) {
+            $api.addCls(thisLi, 'aui-active');
+          }else {
+            if ($api.hasCls(thisLi, 'aui-active')) {
+              $api.removeCls(thisLi, 'aui-active');
+            }
+          }
+        }
+      }
+      function clickTabCheck(index) {
+        checkTab(index)
+        api.setFrameGroupIndex({
+            name: 'millGtoup',
+            index: index,
+            scroll: true
+        });
+      }
+  </script>
+  </html>
